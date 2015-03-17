@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Angular Scheduling</title>
+
+    <!-- CSS -->
+    <!-- load Bootstrap and custom style.css -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootswatch/3.3.0/journal/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- JS -->
+    <!-- load Angular, Firebase, Firebase Angular Library, and custom app.js -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+    <script src="https://cdn.firebase.com/js/client/2.2.2/firebase.js"></script>
+    <script src="https://cdn.firebase.com/libs/angularfire/1.0.0/angularfire.min.js"></script>
+    <script src="app.js"></script>
+    <style>
+      .column {
+        width: 20%;
+        float: left;
+      }
+
+      @media screen and (max-width: 800px) {
+        .column {
+          float: none;
+          width: auto;
+        }
+      }
+    </style>
+</head>
+<body>
+<div class="container" ng-app="scheduleApp" ng-controller="mainController">
+  
+  <div class="page-header text-center">       
+    <h1>Schedule Appointment</h1>   
+    <p>Application built with Angular and a Firebase backend. View the webpage in multiple browser windows or multiple machines to see the appointments change in real time!</p>     
+  </div>
+
+  <!-- were doing one day with 1 time slot for simplicity -->
+  <!-- we'll use angular's ng-repeat in a bit to get the other days and times -->
+  <div class="row times">
+
+    <div class="column text-center" ng-repeat="day in days | object2Array | orderBy: 'dayNumber'" style="margin: auto;">
+              
+      <h2>{{ day.name }}</h2>
+      
+      <div class="time-slot" ng-repeat="slot in day.slots">       
+        <input type="checkbox" id="{{ day.name }}-{{ $index }}" ng-model="slot.booked" ng-disabled="slot.booked">
+        <label for="{{ day.name }}-{{ $index }}">{{ slot.time }}<br>
+          <span ng-if="slot.booked">Booked</span>
+          <span ng-if="!slot.booked">Available</span>
+        </label>
+      </div>
+    </div>    
+
+  </div>
+
+  <p class="text-center">    
+    <a href="#" class="btn btn-primary" ng-click="reset()">Reset</a>
+  </p>
+
+</div>  
+</body>
+</html>
